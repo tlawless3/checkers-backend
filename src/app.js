@@ -1,9 +1,11 @@
-import '@babel/polyfill'
 import express from 'express'
 import dotenv from 'dotenv'
-import path from 'path'
+import session from 'express-session'
 import cors from 'cors'
 import helmet from 'helmet'
+import csrf from 'csurf'
+import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
 import db from './db/index'
 import uuid from 'uuidv4'
 
@@ -11,6 +13,16 @@ dotenv.config()
 
 const app = express();
 const PORT = process.env.PORT;
+
+app.use(bodyParser.json())
+
+//use res.cookie('user','useridvar', {signed: true}) to encode
+//use req.signedCookies['user'] to retrieve
+app.use(cookieParser(process.env.SECRET))
+
+app.use(csrf({
+  cookie: true
+}))
 
 app.use(helmet())
 

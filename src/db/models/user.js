@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize'
+import uuid from 'uuidv4'
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
@@ -6,9 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      defaultvalue: uuid()
     },
-    name: DataTypes.STRING,
+    username: {
+      type: Sequelize.STRING,
+      unique: true
+    }
   }, {});
   User.associate = function (models) {
     // associations can be defined here
