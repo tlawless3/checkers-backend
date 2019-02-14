@@ -1,15 +1,20 @@
 import express from 'express'
 import {
-  login
+  login,
+  createUser
 } from '../functions/handleUser'
 
 const app = express()
 
-app.get('/login', (req, res, next) => {
-  login(req, res)
+app.get('/login', async (req, res, next) => {
+  await login(req, res)
   next()
 })
 
-app.post('/create', (req, res, next) => {
-
+app.post('/create', async (req, res, next) => {
+  await createUser(req, res)
+  // res.send('hello')
+  next()
 })
+
+module.exports = app

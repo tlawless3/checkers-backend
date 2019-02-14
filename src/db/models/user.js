@@ -8,10 +8,10 @@ import Friend from './friend'
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     id: {
-      type: Sequelize.STRING,
-      unique: true,
+      type: Sequelize.UUID,
       primaryKey: true,
-      defaultvalue: uuid()
+      allowNull: false,
+      defaultValue: uuid()
     },
     username: {
       type: Sequelize.STRING,
@@ -20,10 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     role: {
       type: Sequelize.STRING,
-      allowNull: false,
-      defaultvalue: 'user'
+      defaultValue: 'user'
     },
-    displayname: {
+    displayName: {
       type: Sequelize.STRING,
       allowNull: false
     },

@@ -3,10 +3,10 @@ import dotenv from 'dotenv'
 import session from 'express-session'
 import cors from 'cors'
 import helmet from 'helmet'
-import csrf from 'csurf'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import db from './db/index'
+import uuid from 'uuidv4'
 import {
   networkInterfaces
 } from 'os';
@@ -24,10 +24,6 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 //using json web token now pass user credentials as json web token
-
-app.use(csrf({
-  cookie: true
-}))
 
 app.use(helmet())
 
@@ -50,7 +46,7 @@ app.use((err, req, res, next) => {
 })
 
 //set {force: true} to reformat db
-db.sequelize.sync({})
+db.sequelize.sync()
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
