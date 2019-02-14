@@ -33,9 +33,11 @@ app.use(cors({
   optionsSuccessStatus: 200
 }))
 
-app.use('/', (req, res, next) => {
-  res.send('working')
-})
+// app.use('/', (req, res, next) => {
+//   res.send('working')
+// })
+
+app.use('/api/v1.0.0', require('./api/index'))
 
 //error handling
 app.use((err, req, res, next) => {
