@@ -7,7 +7,9 @@ import csrf from 'csurf'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import db from './db/index'
-import uuid from 'uuidv4'
+import {
+  networkInterfaces
+} from 'os';
 
 dotenv.config()
 
@@ -35,6 +37,14 @@ app.use('/', (req, res, next) => {
   res.send('working')
 })
 
+//error handling
+app.use((err, req, res, next) => {
+  console.error(err)
+  console.error(err.stack)
+  res.status(err.status || 500).send(err.message || 'Internal server error.')
+})
+
+//set {force: true} to reformat db
 db.sequelize.sync({})
 
 app.listen(PORT, () => {
