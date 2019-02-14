@@ -2,11 +2,14 @@ import Sequelize from 'sequelize'
 import uuid from 'uuidv4'
 import crypto from 'crypto'
 
+import Friend from './friend'
+
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('user', {
     id: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
+      unique: true,
       primaryKey: true,
       defaultvalue: uuid()
     },
@@ -38,11 +41,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function (models) {
     // associations can be defined here
-    User.belongsToMany(User, {
-      as: "friend",
-      through: "friends",
-      foreignKey: "userId",
-      otherKey: "friendId"
+    User.belongsToMany(models.user, {
+      as: 'friends',
+      through: models.friend,
+      foreignKey: 'userId'
     })
   };
   //instance methods
@@ -68,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       user.password = User.encryptPassword(user.password(), user.salt())
     }
   }
-
+  //sets salt and encrypts password
   User.beforeCreate(setSaltAndPassword)
   User.beforeUpdate(setSaltAndPassword)
 
