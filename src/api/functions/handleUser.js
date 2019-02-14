@@ -1,35 +1,30 @@
 import db from '../../db/index'
 
 const login = async (req, res) => {
-  if (req.body.user) {
-    try {
-      const foundUser = await db.user.findOne({
-        where: {
-          username: req.body.username
-        }
-      })
-      if (foundUser.correctPassword()) {
-        const returnUser = {
-          username: foundUser.username,
-          role: foundUser.role,
-          displayName: foundUser.displayName,
-          userId: foundUser.id
-        }
-        const token = jwt.sign(returnUser, process.env.SECRET)
-        res.cookie('userToken', token)
-        res.status('200')
-        res.send('login successful')
-      } else {
-        res.status('401')
-        res.send('incorrect password')
+  try {
+    const foundUser = await db.user.findOne({
+      where: {
+        username: req.body.user.username
       }
-    } catch (err) {
-      res.status('404')
-      res.send(err)
+    })
+    if (foundUser.prototype.correctPassword()) {
+      const returnUser = {
+        username: foundUser.username,
+        role: foundUser.role,
+        displayName: foundUser.displayName,
+        userId: foundUser.id
+      }
+      const token = jwt.sign(returnUser, process.env.SECRET)
+      res.cookie('userToken', token)
+      res.status('200')
+      res.send('login successful')
+    } else {
+      res.status('401')
+      res.send('incorrect password')
     }
-  } else {
-    res.status('500')
-    res.send('malformed login data')
+  } catch (err) {
+    res.status('404')
+    res.send(err)
   }
 }
 

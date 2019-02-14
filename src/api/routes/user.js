@@ -13,7 +13,6 @@ app.get('/login', async (req, res, next) => {
 
 app.post('/create', async (req, res, next) => {
   await createUser(req, res)
-  // res.send('hello')
   next()
 })
 
