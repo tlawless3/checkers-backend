@@ -18,9 +18,12 @@ const PORT = process.env.PORT;
 
 app.use(bodyParser.json())
 
-//use res.cookie('user','useridvar', {signed: true}) to encode
+//use res.cookie('user','useridvar', {signed: true}) to sign
 //use req.signedCookies['user'] to retrieve
-app.use(cookieParser(process.env.SECRET))
+//pass porcess.env.SECRET to sign with secret, switching to json web token
+app.use(cookieParser())
+
+//using json web token now pass user credentials as json web token
 
 app.use(csrf({
   cookie: true
