@@ -8,7 +8,6 @@ const login = async (req, res) => {
         username: req.body.user.username
       }
     })
-    // console.log('++++++', foundUser.password())
     if (foundUser.correctPassword(req.body.user.password)) {
       const returnUser = {
         username: foundUser.username,
