@@ -1,4 +1,5 @@
 import db from '../../db/index'
+import jwt from 'jsonwebtoken'
 
 const login = async (req, res) => {
   try {
@@ -7,7 +8,8 @@ const login = async (req, res) => {
         username: req.body.user.username
       }
     })
-    if (foundUser.prototype.correctPassword()) {
+    // console.log('++++++', foundUser.password())
+    if (foundUser.correctPassword(req.body.user.password)) {
       const returnUser = {
         username: foundUser.username,
         role: foundUser.role,
