@@ -3,7 +3,7 @@ import uuid from 'uuidv4'
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Friend = sequelize.define('friend', {
+  const Game = sequelize.define('game', {
     id: {
       type: Sequelize.STRING,
       primaryKey: true,
@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         return this.setDataValue('board', JSON.stringify(val));
       }
     },
-    users: {
+    //object with red, black keys values are user ids
+    playerColors: {
       type: Sequelize.STRING,
       get: function () {
         return JSON.parse(this.getDataValue('users'));
@@ -28,14 +29,16 @@ module.exports = (sequelize, DataTypes) => {
         return this.setDataValue('users', JSON.stringify(val));
       }
     },
-    //possible values: 
     status: {
       type: Sequelize.ENUM,
       values: ['blackTurn', 'redTurn', 'redWin', 'blackWin', 'draw'],
       allowNull: false,
-      defaultValue: ''
     },
   }, {});
-  Friend.associate = function (models) {};
-  return Friend;
+  Game.associate = function (models) {
+    Game.belongsToMany(models.user, {
+      through: 'userGames'
+    })
+  };
+  return Game;
 };

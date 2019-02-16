@@ -50,6 +50,9 @@ module.exports = (sequelize, DataTypes) => {
       through: models.friend,
       foreignKey: 'userId'
     })
+    User.belongsToMany(models.game, {
+      through: 'userGames'
+    })
   };
   //instance methods
   User.prototype.correctPassword = function (candidatePwd) {
