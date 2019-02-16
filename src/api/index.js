@@ -8,4 +8,6 @@ app.use('/testApi', (req, res, next) => {
 
 app.use('/user', require('./routes/user'))
 
+app.use('/game', require('./routes/game'))
+
 module.exports = app
