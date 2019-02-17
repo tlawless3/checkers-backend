@@ -1,5 +1,9 @@
 import express from 'express'
 
+import {
+  createGame
+} from '../functions/handleGame'
+
 const app = express()
 
 app.post('/create', async (req, res, next) => {

@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
 
 //set {force: true} to reformat db
 db.sequelize.sync({
-  force: true,
+  force: true
 })
 
 app.listen(PORT, () => {

@@ -1,16 +1,28 @@
-// import db from '../../db/index'
+import db from '../../db/index'
 
 const createGame = async (req, res, next) => {
   const board = generateBoard(req.body.game.boardSize)
   const game = {
     board,
-    ...req.body.game
+    playerColors: req.body.game.playerColors,
+    status: req.body.game.status
   }
-  // const game = await db.game.create(
-  //   game
-  // )
+  // console.log(game)
+  try {
+    //not sure if we need to store the game id on the frontend yet
+    const createdGame = await db.game.create(
+      game
+    )
+    console.log(createdGame)
+    res.status('201')
+    res.send('game created successfully')
+  } catch (err) {
+    res.status('500')
+    res.send(err)
+  }
 }
 
+//only sizes that should be passed are 8 and 10
 const generateBoard = (size) => {
   let rowsOfCheckers = 0;
   let board = [];
@@ -48,4 +60,8 @@ const generateBoard = (size) => {
     board.push(row)
   }
   return board
+}
+
+module.exports = {
+  createGame
 }

@@ -5,25 +5,20 @@ import uuid from 'uuidv4'
 module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define('game', {
     id: {
-      type: Sequelize.STRING,
+      type: Sequelize.UUID,
       primaryKey: true,
       allowNull: false,
-      defaultvalue: uuid()
+      defaultValue: uuid()
     },
     private: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultvalue: false
+      defaultValue: false
     },
     //2d JSON array of board each state can be black, red, or empty
     board: {
-      type: Sequelize.STRING,
-      get: function () {
-        return JSON.parse(this.getDataValue('board'));
-      },
-      set: function (val) {
-        return this.setDataValue('board', JSON.stringify(val));
-      }
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: false
     },
     //object with red, black keys values are user ids
     playerColors: {
