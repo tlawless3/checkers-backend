@@ -7,13 +7,11 @@ const createGame = async (req, res, next) => {
     playerColors: req.body.game.playerColors,
     status: req.body.game.status
   }
-  // console.log(game)
   try {
     //not sure if we need to store the game id on the frontend yet
     const createdGame = await db.game.create(
       game
     )
-    console.log(createdGame)
     res.status('201')
     res.send('game created successfully')
   } catch (err) {
