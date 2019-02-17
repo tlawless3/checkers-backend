@@ -7,6 +7,14 @@ app.post('/create', async (req, res, next) => {
   next()
 })
 
-app.get('/myGames')
+app.put('/update', async (req, res, next) => {
+  await updateGame(req, res)
+  next()
+})
+
+app.get('/user', async (req, res, next) => {
+  await findUserGames(req, res)
+  next()
+})
 
 module.exports = app

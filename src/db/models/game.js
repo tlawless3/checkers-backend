@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultvalue: uuid()
     },
+    private: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultvalue: false
+    },
+    //2d JSON array of board each state can be black, red, or empty
     board: {
       type: Sequelize.STRING,
       get: function () {
@@ -23,10 +29,10 @@ module.exports = (sequelize, DataTypes) => {
     playerColors: {
       type: Sequelize.STRING,
       get: function () {
-        return JSON.parse(this.getDataValue('users'));
+        return JSON.parse(this.getDataValue('playerColors'));
       },
       set: function (val) {
-        return this.setDataValue('users', JSON.stringify(val));
+        return this.setDataValue('playerColors', JSON.stringify(val));
       }
     },
     status: {
