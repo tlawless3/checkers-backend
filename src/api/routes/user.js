@@ -2,7 +2,8 @@ import express from 'express'
 import {
   login,
   createUser,
-  verifyUser
+  verifyUser,
+  usernameAvailable
 } from '../functions/handleUser'
 
 const app = express()
@@ -19,6 +20,11 @@ app.post('/create', async (req, res, next) => {
 
 app.get('/verify', async (req, res, next) => {
   await verifyUser(req, res)
+  next()
+})
+
+app.get('/available', async (req, res, next) => {
+  await usernameAvailable(req, res)
   next()
 })
 

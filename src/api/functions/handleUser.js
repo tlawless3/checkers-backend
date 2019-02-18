@@ -75,8 +75,33 @@ const verifyUser = async (req, res) => {
   }
 }
 
+const usernameAvailable = async (req, res) => {
+  const checkUsername = req.body.user.username
+  const foundUsername = db.user.findOne({
+    where: {
+      username: checkUsername
+    }
+  })
+  if (foundUsername) {
+    const returnValue = ({
+      available: false
+    })
+    const response = JSON.stringify(returnValue)
+    res.status('200')
+    res.send(response)
+  } else {
+    const returnValue = ({
+      available: false
+    })
+    const response = JSON.stringify(returnValue)
+    res.status('200')
+    res.send(response)
+  }
+}
+
 module.exports = {
   login,
   createUser,
-  verifyUser
+  verifyUser,
+  usernameAvailable
 }
