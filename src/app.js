@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import db from './db/index'
+import io from 'socket.io'
 import uuid from 'uuidv4'
 import {
   networkInterfaces
@@ -46,9 +47,7 @@ app.use((err, req, res, next) => {
 })
 
 //set {force: true} to reformat db
-db.sequelize.sync({
-  force: true
-})
+db.sequelize.sync()
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);

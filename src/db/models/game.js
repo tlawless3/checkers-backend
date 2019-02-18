@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-    //2d JSON array of board each state can be black, red, or empty
+    //2d array of board each string is black, red, or empty
     board: {
       type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: false

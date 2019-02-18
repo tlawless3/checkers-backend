@@ -42,6 +42,7 @@
     "regenerator-runtime": "^0.13.1",
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
+    "socket.io": "^2.2.0",
     "uuidv4": "^3.0.1"
   },
   "engines": {

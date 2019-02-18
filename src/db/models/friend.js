@@ -5,7 +5,7 @@ import uuid from 'uuidv4'
 module.exports = (sequelize, DataTypes) => {
   const Friend = sequelize.define('friend', {
     id: {
-      type: Sequelize.STRING,
+      type: Sequelize.UUID,
       primaryKey: true,
       allowNull: false,
       defaultvalue: uuid()

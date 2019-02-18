@@ -1,5 +1,8 @@
-import db from '../../db/index'
+import db, {
+  sequelize
+} from '../../db/index'
 import jwt from 'jsonwebtoken'
+import io from 'socket.io'
 
 const login = async (req, res) => {
   try {
@@ -24,7 +27,7 @@ const login = async (req, res) => {
       res.send('incorrect password')
     }
   } catch (err) {
-    res.status('404')
+    res.status(err.status || '404')
     res.send(err)
   }
 }
@@ -46,12 +49,34 @@ const createUser = async (req, res) => {
     res.status('201')
     res.send('account created successfully')
   } catch (err) {
-    res.status('500')
+    res.status(err.status || '500')
+    res.send(err)
+  }
+}
+
+const verifyUser = async (req, res) => {
+  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
+  try {
+    const foundUser = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      }
+    })
+    const returnValue = ({
+      exists: true,
+      role: foundUser.role
+    })
+    const response = JSON.stringify(returnValue)
+    res.status('200')
+    res.send(response)
+  } catch (err) {
+    res.status(err.status || '404')
     res.send(err)
   }
 }
 
 module.exports = {
   login,
-  createUser
+  createUser,
+  verifyUser
 }
