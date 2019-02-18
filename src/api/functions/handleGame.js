@@ -1,4 +1,5 @@
 import db from '../../db/index'
+import jwt from 'jsonwebtoken'
 
 const createGame = async (req, res) => {
   const board = generateBoard(req.body.game.boardSize)
@@ -7,11 +8,13 @@ const createGame = async (req, res) => {
     playerColors: req.body.game.playerColors,
     status: req.body.game.status
   }
+  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
   try {
     //not sure if we need to store the game id on the frontend yet
     const createdGame = await db.game.create(
       game
     )
+    await createdGame.setUser(clientUserToken.userId)
     res.status('201')
     res.send('game created successfully')
   } catch (err) {
@@ -20,9 +23,10 @@ const createGame = async (req, res) => {
   }
 }
 
+//on update have to dispatch new state to both players
 const updateGame = async (req, res) => {
   try {
-    const targetGame = await db.game.update({
+    await db.game.update({
       ...req.body.game
     }, {
       where: {
@@ -31,6 +35,25 @@ const updateGame = async (req, res) => {
     })
     res.status('200')
     res.send('game updated successfully')
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err.message)
+  }
+}
+
+const findUserGames = async (req, res) => {
+  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
+  try {
+    const games = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      },
+      include: [game]
+    })
+    console.log(games)
+    const gamesJSON = JSON.stringify(games)
+    res.status('200')
+    res.send(gamesJSON)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)

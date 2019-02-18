@@ -82,7 +82,7 @@ const usernameAvailable = async (req, res) => {
       username: checkUsername
     }
   })
-  if (foundUsername) {
+  if (foundUsername.id) {
     const returnValue = ({
       available: false
     })
@@ -91,11 +91,11 @@ const usernameAvailable = async (req, res) => {
     res.send(response)
   } else {
     const returnValue = ({
-      available: false
+      available: true
     })
     const response = JSON.stringify(returnValue)
     res.status('200')
-    res.JSON(response)
+    res.send(response)
   }
 }
 

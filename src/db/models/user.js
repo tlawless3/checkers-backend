@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId'
     })
     User.belongsToMany(models.game, {
+      as: 'Game',
       through: 'userGames'
     })
   };
