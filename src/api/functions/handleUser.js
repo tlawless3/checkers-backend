@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 import io from 'socket.io'
 
 const login = async (req, res) => {
-  console.log(req.body)
   try {
     const foundUser = await db.user.findOne({
       where: {
@@ -19,9 +18,7 @@ const login = async (req, res) => {
         displayName: foundUser.dataValues.displayName,
         userId: foundUser.dataValues.id
       }
-      console.log(returnUser)
       const token = jwt.sign(returnUser, process.env.SECRET)
-      console.log(token)
       res.status('200')
       res.cookie('userToken', token)
       res.send('login successful')
