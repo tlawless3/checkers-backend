@@ -3,7 +3,8 @@ import express from 'express'
 import {
   createGame,
   updateGame,
-  findUserGames
+  findUserGames,
+  findActiveUserGames
 } from '../functions/handleGame'
 
 const app = express()
@@ -24,9 +25,12 @@ app.get('/user/all', async (req, res, next) => {
   next()
 })
 
+//finds all games that aren't over or abandoned
 app.get('/user/active', async (req, res, next) => {
   await findActiveUserGames(req, res)
   next()
 })
+
+//need route to get current game board maybe idk how sockets work
 
 module.exports = app

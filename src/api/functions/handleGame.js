@@ -50,7 +50,31 @@ const findUserGames = async (req, res) => {
       },
       include: [{
         model: db.game,
-        as: 'Game'
+        as: 'Game',
+      }]
+    })
+    const gamesJSON = JSON.stringify(games)
+    res.status('200')
+    res.send(gamesJSON)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err.message)
+  }
+}
+
+const findActiveUserGames = async (req, res) => {
+  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
+  try {
+    const games = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      },
+      include: [{
+        model: db.game,
+        as: 'Game',
+        where: {
+          status: ['blackTurn', 'redTurn']
+        }
       }]
     })
     const gamesJSON = JSON.stringify(games)
@@ -105,5 +129,6 @@ const generateBoard = (size) => {
 module.exports = {
   createGame,
   updateGame,
-  findUserGames
+  findUserGames,
+  findActiveUserGames
 }
