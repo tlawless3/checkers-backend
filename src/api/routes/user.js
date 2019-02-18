@@ -8,7 +8,12 @@ import {
 
 const app = express()
 
-app.get('/login', async (req, res, next) => {
+// app.post('/login', async (req, res, next) => {
+//   await login(req, res)
+//   next()
+// })
+
+app.post('/login', async (req, res, next) => {
   await login(req, res)
   next()
 })
@@ -23,7 +28,7 @@ app.get('/verify', async (req, res, next) => {
   next()
 })
 
-app.get('/available', async (req, res, next) => {
+app.post('/available', async (req, res, next) => {
   await usernameAvailable(req, res)
   next()
 })

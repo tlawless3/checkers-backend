@@ -17,12 +17,16 @@ dotenv.config()
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(bodyParser.json())
 
 //use res.cookie('user','useridvar', {signed: true}) to sign
 //use req.signedCookies['user'] to retrieve
 //pass porcess.env.SECRET to sign with secret, switching to json web token
 app.use(cookieParser())
+
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+app.use(bodyParser.json())
 
 //using json web token now pass user credentials as json web token
 

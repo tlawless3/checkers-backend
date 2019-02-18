@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import io from 'socket.io'
 
 const login = async (req, res) => {
+  console.log(req.body)
   try {
     const foundUser = await db.user.findOne({
       where: {
@@ -13,14 +14,16 @@ const login = async (req, res) => {
     })
     if (foundUser.correctPassword(req.body.user.password)) {
       const returnUser = {
-        username: foundUser.username,
-        role: foundUser.role,
-        displayName: foundUser.displayName,
-        userId: foundUser.id
+        username: foundUser.dataValues.username,
+        role: foundUser.dataValues.role,
+        displayName: foundUser.dataValues.displayName,
+        userId: foundUser.dataValues.id
       }
+      console.log(returnUser)
       const token = jwt.sign(returnUser, process.env.SECRET)
-      res.cookie('userToken', token)
+      console.log(token)
       res.status('200')
+      res.cookie('userToken', token)
       res.send('login successful')
     } else {
       res.status('401')
@@ -28,7 +31,7 @@ const login = async (req, res) => {
     }
   } catch (err) {
     res.status(err.status || '404')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
@@ -44,7 +47,7 @@ const createUser = async (req, res) => {
       displayName: createdUser.displayName,
       userId: createdUser.id
     }
-    const token = jwt.sign(returnUser, process.env.SECRET)
+    const token = await jwt.sign(returnUser, process.env.SECRET)
     res.cookie('userToken', token)
     res.status('201')
     res.send('account created successfully')
@@ -55,23 +58,21 @@ const createUser = async (req, res) => {
 }
 
 const verifyUser = async (req, res) => {
-  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
   try {
+    const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
     const foundUser = await db.user.findOne({
       where: {
         id: clientUserToken.userId
       }
     })
     const returnValue = ({
-      exists: true,
       role: foundUser.role
     })
-    const response = JSON.stringify(returnValue)
     res.status('200')
-    res.send(response)
+    res.send(returnValue)
   } catch (err) {
     res.status(err.status || '404')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
