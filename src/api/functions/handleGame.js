@@ -48,9 +48,11 @@ const findUserGames = async (req, res) => {
       where: {
         id: clientUserToken.userId
       },
-      include: [game]
+      include: [{
+        model: db.game,
+        as: 'Game'
+      }]
     })
-    console.log(games)
     const gamesJSON = JSON.stringify(games)
     res.status('200')
     res.send(gamesJSON)
@@ -102,5 +104,6 @@ const generateBoard = (size) => {
 
 module.exports = {
   createGame,
-  updateGame
+  updateGame,
+  findUserGames
 }

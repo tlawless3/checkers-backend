@@ -2,7 +2,8 @@ import express from 'express'
 
 import {
   createGame,
-  updateGame
+  updateGame,
+  findUserGames
 } from '../functions/handleGame'
 
 const app = express()
