@@ -34,7 +34,8 @@ app.use(helmet())
 
 app.use(cors({
   origin: process.env.ORIGIN_URL,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  credentials: true
 }))
 
 // app.use('/', (req, res, next) => {
