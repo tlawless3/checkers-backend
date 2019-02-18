@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: Sequelize.ENUM,
-      values: ['blackTurn', 'redTurn', 'redWin', 'blackWin', 'draw'],
+      values: ['blackTurn', 'redTurn', 'redWin', 'blackWin', 'draw', 'waiting'],
+      defaultValue: 'waiting',
       allowNull: false,
     },
   }, {});

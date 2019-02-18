@@ -5,8 +5,7 @@ const createGame = async (req, res) => {
   const board = generateBoard(req.body.game.boardSize)
   const game = {
     board,
-    playerColors: req.body.game.playerColors,
-    status: req.body.game.status
+    playerColors: req.body.game.playerColors
   }
   const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
   try {
