@@ -1,6 +1,6 @@
 import db from '../../db/index'
 
-const createGame = async (req, res, next) => {
+const createGame = async (req, res) => {
   const board = generateBoard(req.body.game.boardSize)
   const game = {
     board,
@@ -15,8 +15,25 @@ const createGame = async (req, res, next) => {
     res.status('201')
     res.send('game created successfully')
   } catch (err) {
-    res.status('500')
-    res.send(err)
+    res.status(err.status || '500')
+    res.send(err.message)
+  }
+}
+
+const updateGame = async (req, res) => {
+  try {
+    const targetGame = await db.game.update({
+      ...req.body.game
+    }, {
+      where: {
+        id: req.body.game.gameId
+      }
+    })
+    res.status('200')
+    res.send('game updated successfully')
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err.message)
   }
 }
 
@@ -61,5 +78,6 @@ const generateBoard = (size) => {
 }
 
 module.exports = {
-  createGame
+  createGame,
+  updateGame
 }

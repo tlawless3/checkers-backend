@@ -95,7 +95,7 @@ const usernameAvailable = async (req, res) => {
     })
     const response = JSON.stringify(returnValue)
     res.status('200')
-    res.send(response)
+    res.JSON(response)
   }
 }
 
