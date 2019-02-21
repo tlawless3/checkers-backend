@@ -63,7 +63,10 @@ const verifyUser = async (req, res) => {
       }
     })
     const returnValue = ({
-      role: foundUser.role
+      username: foundUser.dataValues.username,
+      role: foundUser.dataValues.role,
+      displayName: foundUser.dataValues.displayName,
+      userId: foundUser.dataValues.id
     })
     res.status('200')
     res.send(returnValue)

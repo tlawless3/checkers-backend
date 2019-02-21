@@ -8,11 +8,6 @@ import {
 
 const app = express()
 
-// app.post('/login', async (req, res, next) => {
-//   await login(req, res)
-//   next()
-// })
-
 app.post('/login', async (req, res, next) => {
   await login(req, res)
   next()
