@@ -8,10 +8,10 @@ const login = async (req, res) => {
   try {
     const foundUser = await db.user.findOne({
       where: {
-        username: req.body.user.username
+        username: req.body.data.user.username
       }
     })
-    if (foundUser.correctPassword(req.body.user.password)) {
+    if (foundUser.correctPassword(req.body.data.user.password)) {
       const returnUser = {
         username: foundUser.dataValues.username,
         role: foundUser.dataValues.role,
