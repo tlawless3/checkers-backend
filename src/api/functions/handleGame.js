@@ -7,7 +7,7 @@ const createGame = async (req, res) => {
     board,
     playerColors: req.body.game.playerColors
   }
-  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
+  const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
   try {
     //not sure if we need to store the game id on the frontend yet
     const createdGame = await db.game.create(
@@ -52,9 +52,8 @@ const findUserGames = async (req, res) => {
         as: 'Game',
       }]
     })
-    const gamesJSON = JSON.stringify(games)
     res.status('200')
-    res.send(gamesJSON)
+    res.send(games.Game)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
