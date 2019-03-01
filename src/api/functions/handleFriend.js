@@ -11,11 +11,19 @@ const addFriend = async (req, res) => {
         id: clientUserToken.userId
       }
     })
-    console.log(user)
-    db.friend.create({
-      friendId: req.body.friend.friendId,
-      userId: user.id,
-      status: 'sent'
+    const friend = await db.user.findOne({
+      where: {
+        username: req.body.friend.username
+      }
+    })
+    db.friend.findOrCreate({
+      where: {
+        friendId: friend.id,
+        userId: user.id,
+      },
+      defaults: {
+        status: 'sent'
+      }
     })
     res.status(200)
     res.send('friend request set')
@@ -76,8 +84,60 @@ const denyRequest = async (req, res) => {
   }
 }
 
+const findReceived = async (req, res) => {
+  try {
+    const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
+    const user = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      }
+    })
+    const requests = db.friend.findAll({
+      where: {
+        friendId: user.id,
+        status: 'sent'
+      }
+    })
+    res.status(200)
+    res.send(requests)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err)
+  }
+}
+
+const findSent = async (req, res) => {
+  try {
+    const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
+    const user = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      }
+    })
+    const requests = db.friend.findAll({
+      where: {
+        userId: user.id,
+        status: 'sent'
+      }
+    })
+    res.status(200)
+    res.send(requests)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err)
+  }
+}
+
+const findFriends = async (req, res) => {
+  res.statuis('200')
+  res.send('working')
+}
+
 module.exports = {
   addFriend,
   acceptRequest,
-  denyRequest
+  denyRequest,
+  findReceived,
+  findSent,
+  findFriends
 }
