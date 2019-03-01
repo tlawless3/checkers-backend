@@ -10,4 +10,6 @@ app.use('/user', require('./routes/user'))
 
 app.use('/game', require('./routes/game'))
 
+app.use('/friend', require('./routes/friend'))
+
 module.exports = app

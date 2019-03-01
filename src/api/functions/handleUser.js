@@ -2,7 +2,6 @@ import db, {
   sequelize
 } from '../../db/index'
 import jwt from 'jsonwebtoken'
-import io from 'socket.io'
 
 const login = async (req, res) => {
   try {
