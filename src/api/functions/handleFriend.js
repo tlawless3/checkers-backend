@@ -142,7 +142,7 @@ const findFriends = async (req, res) => {
         status: 'friends'
       }
     })
-    res.statuis('200')
+    res.status('200')
     res.send(friends)
   } catch (err) {
     res.status(err.status || '500')

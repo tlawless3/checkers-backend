@@ -15,7 +15,7 @@ const createGame = async (req, res) => {
     )
     await createdGame.setUser(clientUserToken.userId)
     res.status('201')
-    res.send('game created successfully')
+    res.send(createdGame.id)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
