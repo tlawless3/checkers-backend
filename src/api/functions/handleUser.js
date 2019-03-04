@@ -99,9 +99,28 @@ const usernameAvailable = async (req, res) => {
   }
 }
 
+const getUserNameById = async (req, res) => {
+  try {
+    const requestId = req.body.user.requestId
+    const foundUser = await db.user.findOne({
+      where: {
+        id: requestId
+      },
+      attributes: ['displayName']
+    })
+    res.status('200')
+    res.send(foundUser)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.message(err.message)
+  }
+
+}
+
 module.exports = {
   login,
   createUser,
   verifyUser,
-  usernameAvailable
+  usernameAvailable,
+  getUserNameById
 }

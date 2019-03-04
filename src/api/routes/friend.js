@@ -15,12 +15,12 @@ app.post('/request', async (req, res, next) => {
   next()
 })
 
-app.post('/accept', async (req, res, next) => {
+app.put('/accept', async (req, res, next) => {
   await acceptRequest(req, res)
   next()
 })
 
-app.post('/deny', async (req, res, next) => {
+app.put('/deny', async (req, res, next) => {
   await denyRequest(req, res)
   next()
 })

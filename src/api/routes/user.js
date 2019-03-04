@@ -3,6 +3,7 @@ import {
   login,
   createUser,
   verifyUser,
+  getUserNameById,
   usernameAvailable
 } from '../functions/handleUser'
 
@@ -25,6 +26,11 @@ app.get('/verify', async (req, res, next) => {
 
 app.post('/available', async (req, res, next) => {
   await usernameAvailable(req, res)
+  next()
+})
+
+app.post('/id', async (req, res, next) => {
+  await getUserNameById(req, res)
   next()
 })
 
