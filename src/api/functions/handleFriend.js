@@ -29,7 +29,7 @@ const addFriend = async (req, res) => {
     res.send('friend request set')
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
@@ -58,7 +58,7 @@ const acceptRequest = async (req, res) => {
     res.send('friend request accepted')
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
@@ -80,7 +80,7 @@ const denyRequest = async (req, res) => {
     res.send('friend request denied')
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
@@ -92,7 +92,7 @@ const findReceived = async (req, res) => {
         id: clientUserToken.userId
       }
     })
-    const requests = db.friend.findAll({
+    const requests = await db.friend.findAll({
       where: {
         friendId: user.id,
         status: 'sent'
@@ -102,7 +102,7 @@ const findReceived = async (req, res) => {
     res.send(requests)
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
@@ -114,7 +114,7 @@ const findSent = async (req, res) => {
         id: clientUserToken.userId
       }
     })
-    const requests = db.friend.findAll({
+    const requests = await db.friend.findAll({
       where: {
         userId: user.id,
         status: 'sent'
@@ -124,13 +124,30 @@ const findSent = async (req, res) => {
     res.send(requests)
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
 const findFriends = async (req, res) => {
-  res.statuis('200')
-  res.send('working')
+  try {
+    const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
+    const user = await db.user.findOne({
+      where: {
+        id: clientUserToken.userId
+      }
+    })
+    const friends = await db.friend.findAll({
+      where: {
+        userId: user.id,
+        status: 'friends'
+      }
+    })
+    res.statuis('200')
+    res.send(friends)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err.message)
+  }
 }
 
 module.exports = {

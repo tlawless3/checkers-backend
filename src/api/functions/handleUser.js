@@ -49,7 +49,7 @@ const createUser = async (req, res) => {
     res.send('account created successfully')
   } catch (err) {
     res.status(err.status || '500')
-    res.send(err)
+    res.send(err.message)
   }
 }
 
