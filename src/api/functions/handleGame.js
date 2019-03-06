@@ -25,15 +25,16 @@ const createGame = async (req, res) => {
 //on update have to dispatch new state to both players
 const updateGame = async (req, res) => {
   try {
-    await db.game.update({
+    const updatedGame = await db.game.update({
       ...req.body.game
     }, {
       where: {
         id: req.body.game.gameId
-      }
+      },
+      returning: true
     })
     res.status('200')
-    res.send('game updated successfully')
+    res.send(updatedGame[1][0].dataValues)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
@@ -94,14 +95,14 @@ const generateBoard = (size) => {
     rowsOfCheckers = 3
   }
   let alternate = false;
-  for (let i = 0; i < size; i++) {
-    alternate = !alternate
+  for (let j = 0; j < size; j++) {
     const row = []
-    for (let j = 0; j < size; j++) {
+    alternate = !alternate
+    for (let i = 0; i < size; i++) {
       //generate top side of board
       if (i < rowsOfCheckers) {
         if (alternate) {
-          (j % 2 === 0) ? row.push({
+          (i % 2 === 0) ? row.push({
             color: 'red',
             king: false
           }): row.push({
@@ -109,7 +110,7 @@ const generateBoard = (size) => {
             king: false
           });
         } else {
-          (j % 2 !== 0) ? row.push({
+          (i % 2 !== 0) ? row.push({
             color: 'red',
             king: false
           }): row.push({
@@ -120,12 +121,15 @@ const generateBoard = (size) => {
       }
       //generate empty rows
       else if (i >= rowsOfCheckers && i < (size - rowsOfCheckers)) {
-        row.push('empty')
+        row.push({
+          color: 'empty',
+          king: false
+        })
       }
       //generate bottom side of board
       else if (i >= (size - rowsOfCheckers)) {
         if (alternate) {
-          (j % 2 === 0) ? row.push({
+          (i % 2 === 0) ? row.push({
             color: 'black',
             king: false
           }): row.push({
@@ -133,7 +137,7 @@ const generateBoard = (size) => {
             king: false
           });
         } else {
-          (j % 2 !== 0) ? row.push({
+          (i % 2 !== 0) ? row.push({
             color: 'black',
             king: false
           }): row.push({

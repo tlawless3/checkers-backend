@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     //2d array of board each object has props color and king
     board: {
-      type: Sequelize.STRING(10000),
+      type: Sequelize.TEXT,
       allowNull: false,
       get: function () {
         return JSON.parse(this.getDataValue('board'));
