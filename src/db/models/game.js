@@ -15,10 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: false
     },
-    //2d array of board each string is black, red, or empty
+    //2d array of board each object has props color and king
     board: {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: false
+      type: Sequelize.STRING(10000),
+      allowNull: false,
+      get: function () {
+        return JSON.parse(this.getDataValue('board'));
+      },
+      set: function (val) {
+        return this.setDataValue('board', JSON.stringify(val));
+      }
     },
     //object with red, black keys values are user ids
     playerColors: {
