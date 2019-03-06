@@ -16,15 +16,17 @@ const addFriend = async (req, res) => {
         username: req.body.friend.username
       }
     })
-    db.friend.findOrCreate({
-      where: {
-        friendId: friend.id,
-        userId: user.id,
-      },
-      defaults: {
-        status: 'sent'
-      }
-    })
+    if (user.id !== friend.id) {
+      db.friend.findOrCreate({
+        where: {
+          friendId: friend.id,
+          userId: user.id,
+        },
+        defaults: {
+          status: 'sent'
+        }
+      })
+    }
     res.status(200)
     res.send('friend request set')
   } catch (err) {
@@ -74,6 +76,12 @@ const denyRequest = async (req, res) => {
       where: {
         friendId: user.id,
         userId: req.body.friend.friendId
+      }
+    })
+    const nextDeletedUser = await db.friend.destroy({
+      where: {
+        friendId: req.body.friend.friendId,
+        userId: user.id
       }
     })
     res.status(200)

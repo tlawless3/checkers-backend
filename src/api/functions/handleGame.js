@@ -101,9 +101,21 @@ const generateBoard = (size) => {
       //generate top side of board
       if (i < rowsOfCheckers) {
         if (alternate) {
-          (j % 2 === 0) ? row.push('red'): row.push('empty');
+          (j % 2 === 0) ? row.push({
+            color: 'red',
+            king: false
+          }): row.push({
+            color: 'empty',
+            king: false
+          });
         } else {
-          (j % 2 !== 0) ? row.push('red'): row.push('empty');
+          (j % 2 !== 0) ? row.push({
+            color: 'red',
+            king: false
+          }): row.push({
+            color: 'empty',
+            king: false
+          });
         }
       }
       //generate empty rows
@@ -113,9 +125,21 @@ const generateBoard = (size) => {
       //generate bottom side of board
       else if (i >= (size - rowsOfCheckers)) {
         if (alternate) {
-          (j % 2 === 0) ? row.push('black'): row.push('empty');
+          (j % 2 === 0) ? row.push({
+            color: 'black',
+            king: false
+          }): row.push({
+            color: 'empty',
+            king: false
+          });
         } else {
-          (j % 2 !== 0) ? row.push('black'): row.push('empty');
+          (j % 2 !== 0) ? row.push({
+            color: 'black',
+            king: false
+          }): row.push({
+            color: 'empty',
+            king: false
+          });
         }
       }
     }
