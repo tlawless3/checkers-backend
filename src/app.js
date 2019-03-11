@@ -52,7 +52,9 @@ app.use((err, req, res, next) => {
 })
 
 //set {force: true} to reformat db
-db.sequelize.sync()
+db.sequelize.sync({
+  force: true,
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);

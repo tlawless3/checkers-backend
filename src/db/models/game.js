@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         return this.setDataValue('playerColors', JSON.stringify(val));
       }
     },
+    jumpingPiece: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      defaultValue: [],
+    },
     status: {
       type: Sequelize.ENUM,
       values: ['blackTurn', 'redTurn', 'redWin', 'blackWin', 'draw', 'waiting'],
