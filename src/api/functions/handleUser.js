@@ -106,7 +106,7 @@ const getUserNameById = async (req, res) => {
       where: {
         id: requestId
       },
-      attributes: ['displayName']
+      attributes: ['displayName', 'username']
     })
     res.status('200')
     res.send(foundUser)
