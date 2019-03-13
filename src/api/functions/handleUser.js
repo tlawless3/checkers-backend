@@ -20,7 +20,7 @@ const login = async (req, res) => {
       const token = jwt.sign(returnUser, process.env.SECRET)
       res.status('200')
       res.cookie('userToken', token)
-      res.send('login successful')
+      res.send(returnUser)
     } else {
       res.status('401')
       res.send('incorrect password')

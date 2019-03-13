@@ -5,7 +5,8 @@ const createGame = async (req, res) => {
   const board = generateBoard(req.body.game.boardSize)
   const game = {
     board,
-    playerColors: req.body.game.playerColors
+    playerColors: req.body.game.playerColors,
+    status: req.body.game.status
   }
   const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
   try {
@@ -13,7 +14,13 @@ const createGame = async (req, res) => {
     const createdGame = await db.game.create(
       game
     )
-    await createdGame.setUser(clientUserToken.userId)
+    if (req.body.game.playerColors.red !== 'AI' && req.body.game.playerColors.black !== 'AI') {
+      await createdGame.setUser([req.body.game.playerColors.red, req.body.game.playerColors.black])
+    } else if (req.body.game.playerColors.black !== 'AI') {
+      await createdGame.setUser(req.body.game.playerColors.black)
+    } else if (req.body.game.playerColors.red !== 'AI') {
+      await createdGame.setUser(req.body.game.playerColors.red)
+    }
     res.status('201')
     res.send(createdGame.id)
   } catch (err) {
