@@ -32,16 +32,19 @@ const createGame = async (req, res) => {
 //on update have to dispatch new state to both players
 const updateGame = async (req, res) => {
   try {
-    const updatedGame = await db.game.update({
-      ...req.body.game
-    }, {
+    const targetGame = await db.game.findOne({
+      where: {
+        id: req.body.game.gameId
+      }
+    })
+    const updatedGame = await targetGame.update(req.body.game, {
       where: {
         id: req.body.game.gameId
       },
       returning: true
     })
     res.status('200')
-    res.send(updatedGame[1][0].dataValues)
+    res.send(updatedGame)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
@@ -86,6 +89,39 @@ const findActiveUserGames = async (req, res) => {
     const gamesJSON = JSON.stringify(games)
     res.status('200')
     res.send(gamesJSON)
+  } catch (err) {
+    res.status(err.status || '500')
+    res.send(err.message)
+  }
+}
+
+const deleteGame = async (req, res) => {
+  const gameId = req.body.game.id
+  const opponentId = req.body.opponent.id
+  const clientUserToken = jwt.verify(req.cookies.userToken, process.env.SECRET)
+
+  try {
+    const returnGame = await db.game.findOne({
+      where: {
+        id: gameId
+      },
+      include: [{
+        model: db.user,
+        as: 'User'
+      }]
+    })
+    if (returnGame.User.length >= 2 && returnGame.status !== 'waitingBlack' && returnGame.status !== 'waitingRed') {
+      await returnGame.setUser(opponentId)
+      res.send('deleted associations')
+    } else {
+      await db.game.destroy({
+        where: {
+          id: gameId
+        }
+      })
+      res.send('deletedGame')
+    }
+    res.send(returnGame.User)
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
@@ -163,5 +199,6 @@ module.exports = {
   createGame,
   updateGame,
   findUserGames,
-  findActiveUserGames
+  findActiveUserGames,
+  deleteGame
 }

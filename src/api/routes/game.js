@@ -4,7 +4,8 @@ import {
   createGame,
   updateGame,
   findUserGames,
-  findActiveUserGames
+  findActiveUserGames,
+  deleteGame
 } from '../functions/handleGame'
 
 const app = express()
@@ -19,6 +20,12 @@ app.put('/update', async (req, res, next) => {
   next()
 })
 
+//deletes game if there are no associations otherwise deletes users association
+app.put('/delete', async (req, res, next) => {
+  await deleteGame(req, res)
+  next()
+})
+
 //seperated finding all user games from finding active games to pass less data
 app.get('/user/all', async (req, res, next) => {
   await findUserGames(req, res)
@@ -30,6 +37,7 @@ app.get('/user/active', async (req, res, next) => {
   await findActiveUserGames(req, res)
   next()
 })
+
 
 //need route to get current game board maybe idk how sockets work
 
