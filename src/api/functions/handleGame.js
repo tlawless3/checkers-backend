@@ -1,5 +1,8 @@
 import db from '../../db/index'
 import jwt from 'jsonwebtoken'
+import {
+  io
+} from '../../app'
 
 const createGame = async (req, res) => {
   const board = generateBoard(req.body.game.boardSize)
@@ -23,6 +26,11 @@ const createGame = async (req, res) => {
     }
     res.status('201')
     res.send(createdGame.id)
+    if (clientUserToken.userId === createdGame.playerColors.red) {
+      io.sockets.in(createdGame.playerColors.black).emit('updatedGame')
+    } else {
+      io.sockets.in(createdGame.playerColors.red).emit('updatedGame')
+    }
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)
@@ -32,6 +40,7 @@ const createGame = async (req, res) => {
 //on update have to dispatch new state to both players
 const updateGame = async (req, res) => {
   try {
+    const clientUserToken = await jwt.verify(req.cookies.userToken, process.env.SECRET)
     const targetGame = await db.game.findOne({
       where: {
         id: req.body.game.gameId
@@ -45,6 +54,11 @@ const updateGame = async (req, res) => {
     })
     res.status('200')
     res.send(updatedGame)
+    if (clientUserToken.userId === targetGame.playerColors.red) {
+      io.sockets.in(targetGame.playerColors.black).emit('updatedGame')
+    } else {
+      io.sockets.in(targetGame.playerColors.red).emit('updatedGame')
+    }
   } catch (err) {
     res.status(err.status || '500')
     res.send(err.message)

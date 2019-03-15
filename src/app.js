@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import db from './db/index'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -13,7 +14,7 @@ const server = require('http').createServer(app);
 const config = {
   pingTimeout: 60000
 };
-const io = require('socket.io')(server, config)
+export const io = require('socket.io')(server, config)
 const PORT = process.env.PORT;
 
 
@@ -43,6 +44,17 @@ app.use(cors({
 
 app.use('/api/v1.0.0', require('./api/index'))
 
+io.on('connection', (socket) => {
+  console.log('===============Socket Connection')
+  socket.on('login', (userId) => {
+    console.log('----------------' + userId)
+    socket.join(userId)
+  })
+})
+
+// io.on('login', () => {
+//   console.log('----------------loggedin')
+// })
 //error handling
 app.use((err, req, res, next) => {
   console.error(err)
@@ -53,9 +65,6 @@ app.use((err, req, res, next) => {
 //set {force: true} to reformat db
 db.sequelize.sync()
 
-io.on('connection', () => {
-  console.log('===============Connection')
-})
 
 server.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
