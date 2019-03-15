@@ -1,20 +1,19 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import session from 'express-session'
 import cors from 'cors'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import db from './db/index'
-import io from 'socket.io'
-import uuid from 'uuidv4'
-import {
-  networkInterfaces
-} from 'os';
 
 dotenv.config()
 
 const app = express();
+const server = require('http').createServer(app);
+const config = {
+  pingTimeout: 60000
+};
+const io = require('socket.io')(server, config)
 const PORT = process.env.PORT;
 
 
@@ -54,6 +53,10 @@ app.use((err, req, res, next) => {
 //set {force: true} to reformat db
 db.sequelize.sync()
 
-app.listen(PORT, () => {
+io.on('connection', () => {
+  console.log('===============Connection')
+})
+
+server.listen(PORT, () => {
   console.log(`Server is running at PORT ${PORT}`);
 });
