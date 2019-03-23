@@ -15,7 +15,7 @@ const config = {
   pingTimeout: 60000
 };
 export const io = require('socket.io')(server, config)
-const PORT = process.env.PORT || 30000;
+const PORT = process.env.PORT || 3000;
 
 
 //use res.cookie('user','useridvar', {signed: true}) to sign
