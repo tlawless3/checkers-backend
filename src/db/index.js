@@ -9,18 +9,18 @@ const env = process.env.NODE_ENV || 'development';
 const db = {};
 
 const config = {
-  "username": "thomas",
-  "password": null,
-  "database": "checkers_development",
-  "host": process.env.DATABASE_URL || "127.0.0.1",
-  "dialect": "postgres"
+  username: "thomas",
+  password: null,
+  database: "checkers_development",
+  host: process.env.DATABASE_URL || "127.0.0.1",
+  dialect: "postgres"
 }
 
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config);
+  sequelize = new Sequelize(config.host);
 }
 
 fs
