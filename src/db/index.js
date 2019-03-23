@@ -9,11 +9,11 @@ const env = process.env.NODE_ENV || 'development';
 const db = {};
 
 const config = {
-  username: "thomas",
-  password: null,
-  database: "checkers_development",
-  host: "127.0.0.1",
-  dialect: "postgres"
+  "username": "thomas",
+  "password": null,
+  "database": "checkers_development",
+  "host": "127.0.0.1",
+  "dialect": "postgres"
 }
 
 let sequelize;
