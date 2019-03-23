@@ -3,7 +3,8 @@
   "name": "checkers_backend",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node src/app.js",
+    "start-dev": "nodemon --exec babel-node src/app.js",
+    "start": "node dist/app.js",
     "build": "babel src -d dist --source-maps",
     "serve": "node dist/app.js"
   },
