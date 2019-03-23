@@ -3,6 +3,7 @@
     "@babel/preset-env",
   ],
   "plugins": [
+    ["@babel/transform-runtime"],
     // Stage 2
     ["@babel/plugin-proposal-decorators", {
       "legacy": true
