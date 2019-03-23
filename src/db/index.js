@@ -12,7 +12,7 @@ const config = {
   "username": "thomas",
   "password": null,
   "database": "checkers_development",
-  "host": "127.0.0.1",
+  "host": process.env.DATABASE_URL || "127.0.0.1",
   "dialect": "postgres"
 }
 
