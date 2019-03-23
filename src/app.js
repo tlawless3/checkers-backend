@@ -52,6 +52,10 @@ io.on('connection', (socket) => {
   })
 })
 
+io.on('disconnet', (socekt) => {
+
+})
+
 // io.on('login', () => {
 //   console.log('----------------loggedin')
 // })
